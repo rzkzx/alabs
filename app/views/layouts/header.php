@@ -25,6 +25,7 @@
   <link rel="stylesheet" type="text/css" href="<?= URLROOT; ?>/plugins/sweetalert2/sweetalert2.min.css" />
 
   <style>
+    /* btn table edit style */
     .btn-aksi-danger:hover {
       color: red;
     }
@@ -35,6 +36,72 @@
 
     .btn-aksi-primary:hover {
       color: blue;
+    }
+
+
+    /* avatar upload style */
+    .avatar-upload {
+      position: relative;
+      max-width: 205px;
+      margin: 20px auto;
+    }
+
+    .avatar-upload .avatar-edit {
+      position: absolute;
+      right: 12px;
+      z-index: 1;
+      top: 10px;
+    }
+
+    .avatar-upload .avatar-edit input {
+      display: none;
+    }
+
+    .avatar-upload .avatar-edit label {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 0;
+      border-radius: 100%;
+      background: #FFFFFF;
+      border: 1px solid #d4d4d4;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      font-weight: normal;
+      transition: all .2s ease-in-out;
+    }
+
+    .avatar-upload .avatar-edit label:hover {
+      background: #f1f1f1;
+      border-color: #d6d6d6;
+    }
+
+    .avatar-upload .avatar-edit label i {
+      color: #404258;
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      margin: auto;
+    }
+
+    .avatar-preview {
+      width: 192px;
+      height: 192px;
+      position: relative;
+      border-radius: 100%;
+      border: 6px solid #F8F8F8;
+      box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-preview div {
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
   </style>
 
@@ -61,7 +128,7 @@
             <span class="user-name"><?= $_SESSION['nama'] ?></span>
           </a>
           <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-            <a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
+            <a class="dropdown-item" href="<?= URLROOT; ?>/profile"><i class="dw dw-user1"></i> Profile</a>
             <a class="dropdown-item" href="<?= URLROOT; ?>/login/logout"><i class="dw dw-logout"></i> Log Out</a>
           </div>
         </div>

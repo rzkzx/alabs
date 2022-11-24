@@ -61,12 +61,12 @@
           <div class="form-group">
             <label>Jenis Kelamin</label>
             <div class="custom-control custom-radio mb-5">
-              <input type="radio" name="jenis_kelamin" value="Pria" class="custom-control-input" <?php echo ($data['user']->jenis_kelamin == 'Pria') ? 'checked' : ''; ?>>
-              <label class="custom-control-label" for="customRadio1">Laki - Laki / Pria</label>
+              <input type="radio" name="jenis_kelamin" value="Pria" id="radioPria" class="custom-control-input" <?php echo ($data['user']->jenis_kelamin == 'Pria') ? 'checked' : ''; ?>>
+              <label class="custom-control-label" for="radioPria">Laki - Laki / Pria</label>
             </div>
             <div class="custom-control custom-radio mb-5">
-              <input type="radio" name="jenis_kelamin" value="Wanita" class="custom-control-input" <?php echo ($data['user']->jenis_kelamin == 'Wanita') ? 'checked' : ''; ?>>
-              <label class="custom-control-label" for="customRadio2">Perempuan / Wanita</label>
+              <input type="radio" name="jenis_kelamin" value="Wanita" id="radioWanita" class="custom-control-input" <?php echo ($data['user']->jenis_kelamin == 'Wanita') ? 'checked' : ''; ?>>
+              <label class="custom-control-label" for="radioWanita">Perempuan / Wanita</label>
             </div>
           </div>
         </form>

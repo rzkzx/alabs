@@ -52,6 +52,8 @@ class Login extends Controller
     $_SESSION['user_id'] = $user->id;
     $_SESSION['nama'] = $user->nama;
     $_SESSION['nip'] = $user->nip;
+    $_SESSION['email'] = $user->email;
+    $_SESSION['no_hp'] = $user->no_hp;
     $_SESSION['avatar'] = $user->avatar;
     $_SESSION['role'] = $user->role;
     $_SESSION['waktu_login'] = date('Y-m-d H:i:s');

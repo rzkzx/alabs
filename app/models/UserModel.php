@@ -122,17 +122,17 @@ class UserModel
 
   public function changePassword($data)
   {
-    $query = "SELECT * FROM users WHERE username = :username";
+    $query = "SELECT * FROM users WHERE nip = :nip";
     $this->db->query($query);
-    $this->db->bind(':username', $_SESSION['username']);
+    $this->db->bind(':nip', $_SESSION['nip']);
 
     $user = $this->db->single();
     if ($user) {
       if (password_verify($data['password'], $user->password)) {
-        $query = "UPDATE users SET password=:password WHERE username=:username";
+        $query = "UPDATE users SET password=:password WHERE nip=:nip";
         $this->db->query($query);
-        $this->db->bind(':username', $_SESSION['username']);
-        $this->db->bind(':password', password_hash($data['password_baru'], PASSWORD_DEFAULT));
+        $this->db->bind(':nip', $_SESSION['nip']);
+        $this->db->bind(':password', password_hash($data['newPassword'], PASSWORD_DEFAULT));
 
         $this->db->execute();
         return $this->db->rowCount();
@@ -141,6 +141,59 @@ class UserModel
       }
     } else {
       return 0;
+    }
+  }
+
+  public function changeProfile($data, $files)
+  {
+    $newAvatarName = $_SESSION['avatar'];
+    if ($files['avatar']['size'] > 0) {
+      $file_extension = pathinfo($files['avatar']['name'], PATHINFO_EXTENSION);
+      $allowed_extension = array(
+        "png",
+        "jpg",
+        "jpeg"
+      );
+
+      if (!in_array($file_extension, $allowed_extension)) {
+        return false;
+      }
+
+      $newAvatarName = $_SESSION['nip'] . '.' . $file_extension;
+
+      if ($files['avatar']['size'] < 2000 * 1000) {
+        if ($_SESSION['avatar'] == NULL) {
+          move_uploaded_file($files['avatar']['tmp_name'], "../public/images/avatar/" . $newAvatarName);
+        } else {
+          if (unlink("../public/images/avatar/" . $_SESSION['avatar'])) {
+            move_uploaded_file($files['avatar']['tmp_name'], "../public/images/avatar/" . $newAvatarName);
+          }
+        }
+      } else {
+        return false;
+      }
+    }
+
+    $query = "UPDATE users SET nip=:nip,nama=:nama,no_hp=:no_hp,email=:email,jenis_kelamin=:jenis_kelamin,avatar=:avatar WHERE nip=:nip";
+    $this->db->query($query);
+    $this->db->bind(':nip', $_SESSION['nip']);
+    $this->db->bind(':nip', $data['nip']);
+    $this->db->bind(':nama', $data['nama']);
+    $this->db->bind(':no_hp', $data['no_hp']);
+    $this->db->bind(':email', $data['email']);
+    $this->db->bind(':jenis_kelamin', $data['jenis_kelamin']);
+    $this->db->bind(':avatar', $newAvatarName);
+
+    if ($this->db->execute()) {
+      $_SESSION['nip'] = $data['nip'];
+      $_SESSION['nama'] = $data['nama'];
+      $_SESSION['email'] = $data['email'];
+      $_SESSION['no_hp'] = $data['no_hp'];
+      $_SESSION['avatar'] = $newAvatarName;
+
+      return true;
+    } else {
+      return false;
     }
   }
 }
