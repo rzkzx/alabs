@@ -16,12 +16,12 @@
           </a>
         </li>
         <li>
-          <a href="sitemap.html" class="dropdown-toggle no-arrow">
+          <a href="<?= URLROOT; ?>/absen" class="dropdown-toggle no-arrow <?php echo ($data['menu'] == 'Absen') ? 'active' : ''; ?>">
             <span class="micon bi bi-calendar-check"></span><span class="mtext">Absen</span>
           </a>
         </li>
         <li>
-          <a href="sitemap.html" class="dropdown-toggle no-arrow">
+          <a href="<?= URLROOT; ?>/riwayat" class="dropdown-toggle no-arrow <?php echo ($data['menu'] == 'Riwayat Absen') ? 'active' : ''; ?>">
             <span class="micon bi bi-calendar-week"></span><span class="mtext">Riwayat Absen</span>
           </a>
         </li>

@@ -27,8 +27,6 @@ function flash()
     unset($_SESSION['msg']);
 }
 
-
-
 function dateID($tanggal)
 {
     $bulan = array(
@@ -51,4 +49,19 @@ function dateID($tanggal)
     // variabel pecahkan 1 = bulan
     // variabel pecahkan 2 = tanggal
     return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+}
+
+function dayID($tanggal)
+{
+    $day = date('D', strtotime($tanggal));
+    $dayList = array(
+        'Sun' => 'Minggu',
+        'Mon' => 'Senin',
+        'Tue' => 'Selasa',
+        'Wed' => 'Rabu',
+        'Thu' => 'Kamis',
+        'Fri' => 'Jumat',
+        'Sat' => 'Sabtu'
+    );
+    return $dayList[$day];
 }

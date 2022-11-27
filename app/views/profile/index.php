@@ -52,7 +52,7 @@
               </div>
               <div class="form-group">
                 <label>NIP</label>
-                <input class="form-control" type="text" placeholder="" value="<?= $data['user']->nip ?>" name="nip" />
+                <input class="form-control" type="text" placeholder="" value="<?= $data['user']->nip ?>" name="nip" readonly />
               </div>
               <div class="form-group">
                 <label>Nama</label>
@@ -108,9 +108,7 @@
         </div>
       </div>
       <!-- horizontal Basic Forms End -->
-
       <?php require APPROOT . '/views/layouts/footer.php'; ?>
-
       <script>
         function avatarUpload() {
           var inputFile = document.getElementById('imageUpload');

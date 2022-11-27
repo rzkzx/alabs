@@ -91,7 +91,6 @@
       height: 192px;
       position: relative;
       border-radius: 100%;
-      border: 6px solid #F8F8F8;
       box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
     }
 
