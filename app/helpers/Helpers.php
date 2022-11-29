@@ -27,6 +27,16 @@ function flash()
     unset($_SESSION['msg']);
 }
 
+function timeNow()
+{
+    return date('H:i');
+}
+
+function today()
+{
+    return date('Y-m-d');
+}
+
 function dateID($tanggal)
 {
     $bulan = array(
@@ -49,6 +59,13 @@ function dateID($tanggal)
     // variabel pecahkan 1 = bulan
     // variabel pecahkan 2 = tanggal
     return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+}
+
+function timeFilter($time)
+{
+    $timenew = strtotime($time);
+    $waktu = date('H:i', $timenew);
+    return $waktu;
 }
 
 function dayID($tanggal)
