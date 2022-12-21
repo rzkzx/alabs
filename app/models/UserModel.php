@@ -67,6 +67,16 @@ class UserModel
     return $row;
   }
 
+  public function getUserByNIP($nip)
+  {
+    $this->db->query('SELECT * FROM users WHERE nip = :nip');
+    $this->db->bind(':nip', $nip);
+
+    $row = $this->db->single();
+
+    return $row;
+  }
+
   public function getByLogin()
   {
     $query = "SELECT * FROM users WHERE nip = :nip";

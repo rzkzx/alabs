@@ -19,19 +19,14 @@
               </ol>
             </nav>
           </div>
-          <div class="col-md-6 col-sm-12 text-right">
-            <a class="btn btn-primary btn-lg" href="<?= URLROOT; ?>/users/add">
-              <i class="fa fa-user-plus"></i>
-              Tambahkan Pengguna Baru
-            </a>
-          </div>
+
         </div>
       </div>
       <div class="card card-box mb-30">
         <div class="card-header">Profil User</div>
         <div class="card-body row" style="align-items: center;">
           <div class="avatar-preview" style="margin-left:20px;width:150px;height:150px;">
-            <div style="background-image: url(<?= URLROOT; ?>/images/avatar/<?php echo ($_SESSION['avatar']) ? $_SESSION['avatar'] : 'dummy.png'; ?>);">
+            <div style="background-image: url(<?= URLROOT; ?>/images/avatar/<?php echo ($data['user']->avatar) ? $data['user']->avatar : 'dummy.png'; ?>);">
             </div>
           </div>
           <div class="pd-20">
@@ -39,22 +34,22 @@
               <tr>
                 <td>Nama</td>
                 <td>:</td>
-                <td class="info"><?= $_SESSION['nama'] ?></td>
+                <td class="info"><?= $data['user']->nama ?></td>
               </tr>
               <tr>
                 <td>NIP</td>
                 <td>:</td>
-                <td class="info"><?= $_SESSION['nip'] ?></td>
+                <td class="info"><?= $data['user']->nip ?></td>
               </tr>
               <tr>
                 <td>Email</td>
                 <td>:</td>
-                <td class="info"><?= $_SESSION['email'] ?></td>
+                <td class="info"><?= $data['user']->email ?></td>
               </tr>
               <tr>
                 <td>No HP</td>
                 <td>:</td>
-                <td class="info"><?= $_SESSION['no_hp'] ?></td>
+                <td class="info"><?= $data['user']->no_hp ?></td>
               </tr>
             </table>
           </div>
@@ -64,6 +59,12 @@
       <div class="card-box mb-30">
         <div class="pb-20 pt-20">
           <?php flash(); ?>
+          <div class="d-flex flex-row align-items-center" style="justify-content: flex-end;">
+            <form class="form-inline" method="POST" action="">
+              <input type="month" class="form-control mr-2" placeholder="" name="date" value="<?php echo isset($_POST['date']) ? $_POST['date'] : '' ?>" />
+              <button class="btn btn-primary mr-2" name="filter"><span class="fa fa-filter"></span></button>
+            </form>
+          </div>
           <table class="table hover stripe data-table-export nowrap">
             <thead>
               <tr>
@@ -109,44 +110,3 @@
       </div>
 
       <?php require APPROOT . '/views/layouts/footer.php'; ?>
-
-      <script>
-        function alertConfirmation() {
-          $(document).delegate("#btnDelete", "click", function() {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Anda yakin menghapus user ini?',
-              showDenyButton: false,
-              showCancelButton: true,
-              confirmButtonText: 'Hapus',
-              cancelButtonText: 'Batal'
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-
-                var id = $(this).attr('data-id');
-
-                // Ajax config
-                $.ajax({
-                  type: "POST", //we are using GET method to get data from server side
-                  url: '<?= URLROOT ?>/users/delete/' + id, // get the route value
-                  beforeSend: function() { //We add this before send to disable the button once we submit it so that we prevent the multiple click
-
-                  },
-                  success: function(response) { //once the request successfully process to the server side it will return result here
-                    // Reload lists of employees
-                    Swal.fire('Berhasil Hapus Pengguna.', response, 'success').then((result) => {
-                      if (result.isConfirmed) {
-                        location.reload();
-                      }
-                    });
-                  }
-                });
-
-              } else if (result.isDenied) {
-                Swal.fire('Perubahan tidak disimpan', '', 'info')
-              }
-            });
-          });
-        }
-      </script>

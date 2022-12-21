@@ -30,7 +30,31 @@ class AbsenModel
 
   public function getRiwayat()
   {
-    $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat ORDER BY id DESC');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
+    $this->db->bind('nip', $_SESSION['nip']);
+    $result = $this->db->resultSet();
+
+    return $result;
+  }
+
+  public function getRiwayatUserNIP($nip)
+  {
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
+    $this->db->bind('nip', $nip);
+    $result = $this->db->resultSet();
+
+    return $result;
+  }
+
+  public function getRiwayatUserNIPByDate($nip, $date)
+  {
+    $bulan = date("m", strtotime($date));
+    $tahun = date("Y", strtotime($date));
+
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip AND MONTH(tanggal) = :bulan AND YEAR(tanggal) = :tahun ORDER BY id DESC');
+    $this->db->bind('nip', $nip);
+    $this->db->bind('bulan', $bulan);
+    $this->db->bind('tahun', $tahun);
     $result = $this->db->resultSet();
 
     return $result;
@@ -40,6 +64,20 @@ class AbsenModel
   {
     $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
     $this->db->bind('nip', $_SESSION['nip']);
+    $result = $this->db->resultSet();
+
+    return $result;
+  }
+
+  public function getRiwayatUserLoggedByDate($date)
+  {
+    $bulan = date("m", strtotime($date));
+    $tahun = date("Y", strtotime($date));
+
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip AND MONTH(tanggal) = :bulan AND YEAR(tanggal) = :tahun ORDER BY id DESC');
+    $this->db->bind('nip', $_SESSION['nip']);
+    $this->db->bind('bulan', $bulan);
+    $this->db->bind('tahun', $tahun);
     $result = $this->db->resultSet();
 
     return $result;
