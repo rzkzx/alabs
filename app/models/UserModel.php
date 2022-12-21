@@ -57,6 +57,18 @@ class UserModel
     return $row;
   }
 
+  public function getAdmin()
+  {
+    $role = 'admin';
+
+    $this->db->query('SELECT * FROM users WHERE role = :role');
+    $this->db->bind(':role', $role);
+
+    $row = $this->db->resultSet();
+
+    return $row;
+  }
+
   public function getUserById($id)
   {
     $this->db->query('SELECT * FROM users WHERE id = :id');
