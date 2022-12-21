@@ -14,7 +14,7 @@ class Absen extends Controller
 
   public function index()
   {
-    $absenToday = $this->absenModel->getAbsenToday();
+    $absenToday = $this->absenModel->getAbsenTodayByUserLogged();
 
     $data = [
       'title' => 'Absen',
@@ -37,15 +37,15 @@ class Absen extends Controller
         $data = explode('-', $ket);
         if ($data[1] == 'masuk') {
           if ($this->absenModel->absenMasuk($data)) {
-            setFlash('Berhasil mengisi absen kehadiran hari ini', 'success');
+            return 'Berhasil mengisi absen kehadiran hari ini';
           } else {
-            setFlash('Gagal absen hari ini', 'danger');
+            return 'Gagal absen hari ini';
           }
         } else {
           if ($this->absenModel->absenPulang($data)) {
-            setFlash('Berhasil mengisi absen kehadiran hari ini', 'success');
+            return 'Berhasil mengisi absen kehadiran hari ini';
           } else {
-            setFlash('Gagal absen hari ini', 'danger');
+            return 'Gagal absen hari ini';
           }
         }
       }

@@ -12,12 +12,13 @@ class AbsenModel
   }
 
   // Absen
-  public function getAbsenToday()
+  public function getAbsenTodayByUserLogged()
   {
     $tanggal = today();
 
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE tanggal=:tanggal');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE tanggal=:tanggal AND nip=:nip');
     $this->db->bind('tanggal', $tanggal);
+    $this->db->bind('nip', $_SESSION['nip']);
     $row = $this->db->single();
 
     if ($row) {
@@ -26,7 +27,8 @@ class AbsenModel
       return 0;
     }
   }
-  public function get()
+
+  public function getRiwayat()
   {
     $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat ORDER BY id DESC');
     $result = $this->db->resultSet();
@@ -34,13 +36,13 @@ class AbsenModel
     return $result;
   }
 
-  public function getSuratKeluarById($id)
+  public function getRiwayatUserLogged()
   {
-    $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat WHERE ' . $this->surat . '.id=:id');
-    $this->db->bind('id', $id);
-    $row = $this->db->single();
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
+    $this->db->bind('nip', $_SESSION['nip']);
+    $result = $this->db->resultSet();
 
-    return $row;
+    return $result;
   }
 
   public function absenMasuk($data)
@@ -74,8 +76,9 @@ class AbsenModel
     $tanggal = today();
     $jam_pulang = timeNow();
 
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE tanggal=:tanggal');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE tanggal=:tanggal AND nip=:nip');
     $this->db->bind('tanggal', $tanggal);
+    $this->db->bind('nip', $_SESSION['nip']);
     $result = $this->db->single();
 
     $this->db->query('UPDATE ' . $this->table . ' SET jam_pulang=:jam_pulang WHERE id=:id');

@@ -102,6 +102,16 @@
       background-repeat: no-repeat;
       background-position: center;
     }
+
+    table.data-user-riwayat td {
+      padding: 5px;
+      padding-right: 20px;
+      color: #6c757d;
+    }
+
+    table.data-user-riwayat td.info {
+      color: #000;
+    }
   </style>
 
 </head>

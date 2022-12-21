@@ -21,8 +21,8 @@
           </a>
         </li>
         <li>
-          <a href="<?= URLROOT; ?>/riwayat" class="dropdown-toggle no-arrow <?php echo ($data['menu'] == 'Riwayat Absen') ? 'active' : ''; ?>">
-            <span class="micon bi bi-calendar-week"></span><span class="mtext">Riwayat Absen</span>
+          <a href="<?= URLROOT; ?>/riwayat" class="dropdown-toggle no-arrow <?php echo ($data['menu'] == 'Riwayat Abseni') ? 'active' : ''; ?>">
+            <span class="micon bi bi-calendar-week"></span><span class="mtext">Riwayat Absensi</span>
           </a>
         </li>
         <?php if (Middleware::admin()) {
