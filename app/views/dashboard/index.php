@@ -96,7 +96,7 @@
       <div class="col-md-4 mb-20">
         <a href="#" class="card-box d-block mx-auto pd-20 text-secondary">
           <div class="img pb-30">
-            <img src="<?= URLROOT; ?>//images/remedy-amico.svg" alt="" />
+            <img src="<?= URLROOT; ?>/images/remedy-amico.svg" alt="" />
           </div>
           <div class="content">
             <h3 class="h4">Absensi</h3>
