@@ -76,7 +76,6 @@
                     <div class="card-body">
                       <p class="card-text mb-0">Jam Datang : <b class="text-success">08:00 - 08:20</b> </p>
                       <p class="card-text">Status Kehadiran : <?php echo (isset($data['absen'])) ? '<b class="">' . $data['absen']->keterangan . '</b>' : '<b class="text-danger">Belum Absen</b>'; ?> </p>
-
                       <?php
                       if (isset($data['absen'])) { ?>
                         <div style="text-align: center;">
@@ -85,15 +84,21 @@
                         </div>
                       <?php } else {
                       ?>
-                        <div class="row" style="text-align:center;padding:20px;justify-content:space-around;">
-                          <button type="button" id="btnAbsen" data-ket="hadir-masuk" class="btn btn-success btn-lg">
-                            Absen Hadir
+                      <div style="text-align: center;">
+                      <button type="button" id="btnAbsen" data-ket="hadir-masuk" class="btn btn-success btn-lg">
+                            Hadir
                           </button>
+                    </div>
+                      
+                        <div class="row" style="text-align:center;padding:20px;justify-content:space-around;">
                           <button type="button" id="btnIzin" data-ket="izin-masuk" class="btn btn-warning btn-lg">
                             Izin
                           </button>
                           <button type="button" id="btnTidak" data-ket="tidak-masuk" class="btn btn-danger btn-lg">
-                            Tidak Hadir
+                            Absen
+                          </button>
+                          <button type="button" id="btnCuti" data-ket="cuti-masuk" class="btn btn-secondary btn-lg">
+                            Cuti
                           </button>
                         </div>
                       <?php
@@ -107,26 +112,41 @@
                   <div class="card card-box">
                     <h5 class="card-header weight-500"><i class="fa fa-clock-o"></i> Absen Pulang</h5>
                     <div class="card-body">
+                      <?php 
+                      if(isset($data['absen']) && $data['absen']->jam_masuk && $data['absen']->keterangan != 'Hadir'){
+                        $statusPulang = '<b class="">' . $data['absen']->keterangan . '</b>';
+                      }elseif(isset($data['absen']) && $data['absen']->jam_pulang) {
+                        $statusPulang = '<b class="">' . $data['absen']->keterangan . '</b>';
+                      }else{
+                        $statusPulang = '<b class="text-danger">Belum Absen</b>';
+                      } 
+                      ?>
                       <p class="card-text mb-0">Jam Datang : <b class="text-success">17:00 - 18:00</b> </p>
-                      <p class="card-text">Status Kehadiran : <?php echo (isset($data['absen']) && $data['absen']->jam_pulang) ? '<b class="">' . $data['absen']->keterangan . '</b>' : '<b class="text-danger">Belum Absen</b>'; ?> </p>
+                      <p class="card-text">Status Kehadiran : <?= $statusPulang ?></p>
                       <?php
-                      if (isset($data['absen']) && $data['absen']->jam_pulang) { ?>
+                      if (isset($data['absen']) &&  $data['absen']->jam_masuk && $data['absen']->jam_pulang) { ?>
                         <div style="text-align: center;">
                           <p><i>Sudah absen pulang pada jam</i></p>
                           <h5><?= timeFilter($data['absen']->jam_pulang); ?></h5>
                         </div>
-                        <?php } else {
-                        if (isset($data['absen']) && $data['absen']->jam_masuk && !$data['absen']->jam_pulang) {
+                        <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && $data['absen']->keterangan == 'Tidak Hadir') { ?>
+                          <div style="text-align: center;">
+                          <p><i>Anda Tidak Hadir hari ini</i></p>
+                        </div>
+                        <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && ($data['absen']->keterangan == 'Izin' || $data['absen']->keterangan == 'Cuti')) { ?>
+                          <div style="text-align: center;">
+                            <?php if($data['absen']->konfirmasi){ ?>
+                              <h6><i>Absensi Kehadiran telah <?= $data['absen']->konfirmasi ?></i></h6>
+                            <?php }else{ ?>
+                              <h6><i>Menunggu Konfirmasi dari Admin</i></h6>
+                              <?php
+                            } ?>
+                          </div>
+                        <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && !$data['absen']->jam_pulang && $data['absen']->keterangan == 'Hadir') {
                         ?>
                           <div class="row" style="text-align:center;padding:20px;justify-content:space-around;">
                             <button type="button" id="btnAbsen" data-ket="hadir-pulang" class="btn btn-success btn-lg">
-                              Absen Hadir
-                            </button>
-                            <button type="button" id="btnIzin" data-ket="izin-pulang" class="btn btn-warning btn-lg">
-                              Izin
-                            </button>
-                            <button type="button" id="btnTidak" data-ket="tidak-pulang" class="btn btn-danger btn-lg">
-                              Tidak Hadir
+                              Absen Pulang
                             </button>
                           </div>
                         <?php
@@ -138,7 +158,6 @@
                           </div>
                       <?php
                         }
-                      }
                       ?>
 
                     </div>
@@ -223,6 +242,44 @@
             Swal.fire({
               icon: 'warning',
               title: 'Anda Tidak Hadir hari ini?',
+              showDenyButton: false,
+              showCancelButton: true,
+              confirmButtonText: 'Absen',
+              cancelButtonText: 'Batal'
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+
+                var ket = $(this).attr('data-ket');
+
+                // Ajax config
+                $.ajax({
+                  type: "POST", //we are using GET method to get data from server side
+                  url: '<?= URLROOT ?>/absen/absensi/' + ket, // get the route value
+                  beforeSend: function() { //We add this before send to disable the button once we submit it so that we prevent the multiple click
+
+                  },
+                  success: function(response) { //once the request successfully process to the server side it will return result here
+                    // Reload lists of employees
+                    Swal.fire('Berhasil Absen Kehadiran hari ini.', response, 'success').then((result) => {
+                      if (result.isConfirmed) {
+                        location.reload();
+                      }
+                    });
+                  }
+                });
+
+              } else if (result.isDenied) {
+                Swal.fire('Perubahan tidak disimpan', '', 'info')
+              }
+            });
+          });
+
+          
+          $(document).delegate("#btnCuti", "click", function() {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Anda Cuti hari ini?',
               showDenyButton: false,
               showCancelButton: true,
               confirmButtonText: 'Absen',

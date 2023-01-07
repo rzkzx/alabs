@@ -62,7 +62,7 @@
         <div class="card-box height-100-p widget-style3">
           <div class="d-flex flex-wrap">
             <div class="widget-data">
-              <div class="weight-700 font-24 text-dark"><a href="https://www.instagram.com/?hl=id" target="_blank">@humasBJB</a></div>
+              <div class="weight-700 font-24 text-dark"><a href="https://www.instagram.com/polres_banjarbaru/" target="_blank">@humasBJB</a></div>
               <div class="font-14 text-secondary weight-500">Instagram</div>
             </div>
             <div class="widget-icon">

@@ -44,6 +44,7 @@
               $no = 1;
               foreach ($data['users'] as $user) {
               ?>
+              <a href="<?= URLROOT; ?>/riwayat/users/<?= $user->nip ?>">
                 <tr>
                   <td><?= $no ?></td>
                   <td class="table-plus"><?= $user->nama ?></td>
@@ -55,6 +56,7 @@
                     <a href="<?= URLROOT; ?>/riwayat/users/<?= $user->nip ?>" class="p-2 btn btn-aksi-primary"><i class="dw dw-eye"></i></a>
                   </td>
                 </tr>
+                </a>
               <?php
                 $no++;
               }

@@ -15,11 +15,24 @@
             <span class="micon bi-grid-fill"></span><span class="mtext">Dashboard</span>
           </a>
         </li>
+        <?php 
+        if(Middleware::admin()){ ?>
+        <li>    
+          <a href="<?= URLROOT; ?>/konfirmasi" class="dropdown-toggle no-arrow <?php echo ($data['menu'] == 'Konfirmasi Absensi') ? 'active' : ''; ?>">
+            <span class="micon bi bi-calendar-check"></span><span class="mtext">Konfirmasi</span>
+          </a>
+        </li>
+        <?php
+        }else{
+          ?>
         <li>
           <a href="<?= URLROOT; ?>/absen" class="dropdown-toggle no-arrow <?php echo ($data['menu'] == 'Absen') ? 'active' : ''; ?>">
             <span class="micon bi bi-calendar-check"></span><span class="mtext">Absen</span>
           </a>
         </li>
+        <?php
+        }
+        ?>
         <li>
           <?php if (Middleware::admin()) {
             $linkRiwayat = 'riwayat/users';

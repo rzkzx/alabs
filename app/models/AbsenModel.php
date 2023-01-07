@@ -28,6 +28,18 @@ class AbsenModel
     }
   }
 
+  public function getAbsensiKonfirmasiToday(){
+    $tanggal = today();
+
+    $this->db->query('SELECT absen.*, users.nama, users.no_hp FROM ' . $this->table . ' LEFT JOIN users ON users.nip=absen.nip WHERE tanggal=:tanggal AND keterangan=:izin OR keterangan=:cuti');
+    $this->db->bind('tanggal', $tanggal);
+    $this->db->bind('izin', 'Izin');
+    $this->db->bind('cuti', 'Cuti');
+    $result = $this->db->resultSet();
+
+    return $result;
+  }
+
   public function getRiwayat()
   {
     $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
@@ -92,6 +104,8 @@ class AbsenModel
       $keterangan = 'Hadir';
     } elseif ($data[0] == 'izin') {
       $keterangan = 'Izin';
+    } elseif ($data[0] == 'cuti') {
+      $keterangan = 'Cuti';
     } else {
       $keterangan = 'Tidak Hadir';
     }
@@ -122,6 +136,27 @@ class AbsenModel
     $this->db->query('UPDATE ' . $this->table . ' SET jam_pulang=:jam_pulang WHERE id=:id');
     $this->db->bind(':id', $result->id);
     $this->db->bind(':jam_pulang', $jam_pulang);
+
+    //execute 
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function konfirmasi($data)
+  {
+    $id = $data[1];
+    if($data[0] == 'diterima'){
+      $ket = 'Diterima';
+    }else{
+      $ket = 'Ditolak';
+    }
+
+    $this->db->query('UPDATE ' . $this->table . ' SET konfirmasi=:konfirmasi WHERE id=:id');
+    $this->db->bind(':id', $id);
+    $this->db->bind(':konfirmasi', $ket);
 
     //execute 
     if ($this->db->execute()) {
