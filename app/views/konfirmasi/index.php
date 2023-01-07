@@ -71,7 +71,7 @@
                   <td class="table-plus"><?= $absen->nama ?></td>
                   <td><?= $absen->no_hp ?></td>
                   <td>
-                    <h6><span class="badge badge-<?= $badge ?> badge-lg"><?= $absen->keterangan ?></span></h6>
+                    <h6><span class="badge badge-<?= $badge ?> badge-lg text-uppercase"><?= $absen->keterangan ?></span></h6>
                   </td>
                   <td><?= $awal_cuti ?></td>
                   <td><?= $akhir_cuti ?></td>

@@ -130,6 +130,17 @@ class AbsenModel
     $jam_masuk = timeNow();
     $keterangan = 'Cuti';
 
+    // // get day diff between cuti date
+    $cuti_mulai = strtotime($data['cuti_mulai']);
+    $cuti_akhir = strtotime($data['cuti_berakhir']);
+    $datediff = $cuti_akhir - $cuti_mulai;
+
+    $daysDiff = round($datediff / (60 * 60 * 24));
+
+    if ($daysDiff < 1) {
+      return false;
+    }
+
     $query = "INSERT INTO " . $this->table . " (nip, tanggal, jam_masuk, keterangan, cuti_mulai, cuti_berakhir) 
     VALUES (:nip, :tanggal, :jam_masuk, :keterangan, :cuti_mulai, :cuti_berakhir)";
 
@@ -172,16 +183,53 @@ class AbsenModel
   {
     $id = $data[1];
     if ($data[0] == 'diterima') {
-      $ket = 'Diterima';
-      $this->db->query('UPDATE ' . $this->table . ' SET konfirmasi=:konfirmasi WHERE id=:id');
-      $this->db->bind(':id', $id);
-      $this->db->bind(':konfirmasi', $ket);
+      $this->db->query('SELECT * FROM ' . $this->table . ' WHERE id=:id');
+      $this->db->bind('id', $id);
+      $absen = $this->db->single();
 
-      //execute 
-      if ($this->db->execute()) {
-        return true;
+      $ket = 'Diterima';
+
+      if ($absen->keterangan == 'Cuti') {
+        $this->db->query('UPDATE ' . $this->table . ' SET konfirmasi=:konfirmasi WHERE id=:id');
+        $this->db->bind(':id', $id);
+        $this->db->bind(':konfirmasi', $ket);
+        $this->db->execute();
+
+        // // get day diff between cuti date
+        $cuti_mulai = strtotime($absen->cuti_mulai);
+        $cuti_akhir = strtotime($absen->cuti_berakhir);
+        $datediff = $cuti_akhir - $cuti_mulai;
+
+        $daysDiff = round($datediff / (60 * 60 * 24));
+        $tanggal = date('Y-m-d', strtotime('+1 days'));
+
+        for ($i = 0; $i < $daysDiff; $i++) {
+          $query = "INSERT INTO " . $this->table . " (nip, tanggal, jam_masuk, keterangan, konfirmasi, cuti_mulai, cuti_berakhir) 
+    VALUES (:nip, :tanggal, :jam_masuk, :keterangan, :konfirmasi, :cuti_mulai, :cuti_berakhir)";
+
+          $this->db->query($query);
+          $this->db->bind('nip', $absen->nip);
+          $this->db->bind('tanggal', $tanggal);
+          $this->db->bind('jam_masuk', $absen->jam_masuk);
+          $this->db->bind('keterangan', 'Cuti');
+          $this->db->bind('konfirmasi', 'Diterima');
+          $this->db->bind('cuti_mulai', $absen->cuti_mulai);
+          $this->db->bind('cuti_berakhir', $absen->cuti_berakhir);
+          $this->db->execute();
+          $tanggal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal)));
+        }
+
+        return $this->db->rowCount();
       } else {
-        return false;
+        $this->db->query('UPDATE ' . $this->table . ' SET konfirmasi=:konfirmasi WHERE id=:id');
+        $this->db->bind(':id', $id);
+        $this->db->bind(':konfirmasi', $ket);
+        //execute 
+        if ($this->db->execute()) {
+          return true;
+        } else {
+          return false;
+        }
       }
     } else {
       $this->db->query('DELETE FROM ' . $this->table . ' WHERE id = :id');

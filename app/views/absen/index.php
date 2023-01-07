@@ -55,8 +55,6 @@
                     <span class="text-secondary">Nomor HP:</span>
                     <?= $_SESSION['no_hp'] ?>
                   </li>
-
-                  <h6><?= $data['totalCuti'] ?></h6>
                 </ul>
               </div>
             </form>

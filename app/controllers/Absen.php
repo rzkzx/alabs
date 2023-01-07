@@ -21,10 +21,9 @@ class Absen extends Controller
     $totalCuti = 0;
 
     foreach ($dataCuti as $cuti) {
-      $diffDate = abs(strtotime($cuti->cuti_berakhir) - strtotime($cuti->cuti_mulai));
-      $years = floor($diffDate / (365 * 60 * 60 * 24));
-      $months = floor(($diffDate - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
-      $days = floor(($diffDate - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
+      $datediff = strtotime($cuti->cuti_berakhir) - strtotime($cuti->cuti_mulai);
+
+      $days = round($datediff / (60 * 60 * 24));
 
       $totalCuti += $days;
       $index++;
