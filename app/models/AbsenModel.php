@@ -196,10 +196,10 @@ class AbsenModel
   }
 
   //batas maksimal cuti model
-  public function getDataCutiByMonthAndUserLogged()
+  public function getDataCutiByYearAndUserLogged()
   {
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE MONTH(tanggal)=:month AND keterangan=:keterangan AND nip=:nip');
-    $this->db->bind('month', date('m'));
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE YEAR(tanggal)=:tahun AND keterangan=:keterangan AND nip=:nip');
+    $this->db->bind('tahun', date('Y'));
     $this->db->bind('keterangan', 'Cuti');
     $this->db->bind('nip', $_SESSION['nip']);
     $result = $this->db->resultSet();

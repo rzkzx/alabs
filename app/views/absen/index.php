@@ -55,6 +55,8 @@
                     <span class="text-secondary">Nomor HP:</span>
                     <?= $_SESSION['no_hp'] ?>
                   </li>
+
+                  <h6><?= $data['totalCuti'] ?></h6>
                 </ul>
               </div>
             </form>
@@ -98,7 +100,7 @@
                             Absen
                           </button>
                           <!-- Button trigger modal -->
-                          <?php if ($data['totalCuti'] > 3) {
+                          <?php if ($data['totalCuti'] > 14) {
                           ?>
                             <button type="button" id="btnCuti" class="btn btn-primary btn-lg">
                               Cuti
@@ -250,7 +252,7 @@
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: 'Anda melebihi batas cuti bulanan!',
+              text: 'Anda melebihi batas cuti tahunan!',
               confirmButtonText: 'OK',
             })
           });

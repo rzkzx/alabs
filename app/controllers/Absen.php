@@ -15,7 +15,7 @@ class Absen extends Controller
   public function index()
   {
     $absenToday = $this->absenModel->getAbsenTodayByUserLogged();
-    $dataCuti = $this->absenModel->getDataCutiByMonthAndUserLogged();
+    $dataCuti = $this->absenModel->getDataCutiByYearAndUserLogged();
 
     $index = 0;
     $totalCuti = 0;
