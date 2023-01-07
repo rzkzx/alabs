@@ -28,10 +28,11 @@ class AbsenModel
     }
   }
 
-  public function getAbsensiKonfirmasiToday(){
+  public function getAbsensiKonfirmasiToday()
+  {
     $tanggal = today();
 
-    $this->db->query('SELECT absen.*, users.nama, users.no_hp FROM ' . $this->table . ' LEFT JOIN users ON users.nip=absen.nip WHERE tanggal=:tanggal AND keterangan=:izin OR keterangan=:cuti');
+    $this->db->query('SELECT absen.*, users.nama, users.no_hp FROM ' . $this->table . ' LEFT JOIN users ON users.nip=absen.nip WHERE tanggal=:tanggal AND (keterangan=:izin OR keterangan=:cuti)');
     $this->db->bind('tanggal', $tanggal);
     $this->db->bind('izin', 'Izin');
     $this->db->bind('cuti', 'Cuti');
@@ -148,9 +149,9 @@ class AbsenModel
   public function konfirmasi($data)
   {
     $id = $data[1];
-    if($data[0] == 'diterima'){
+    if ($data[0] == 'diterima') {
       $ket = 'Diterima';
-    }else{
+    } else {
       $ket = 'Ditolak';
     }
 

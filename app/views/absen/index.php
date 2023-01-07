@@ -84,12 +84,12 @@
                         </div>
                       <?php } else {
                       ?>
-                      <div style="text-align: center;">
-                      <button type="button" id="btnAbsen" data-ket="hadir-masuk" class="btn btn-success btn-lg">
+                        <div style="text-align: center;">
+                          <button type="button" id="btnAbsen" data-ket="hadir-masuk" class="btn btn-success btn-lg">
                             Hadir
                           </button>
-                    </div>
-                      
+                        </div>
+
                         <div class="row" style="text-align:center;padding:20px;justify-content:space-around;">
                           <button type="button" id="btnIzin" data-ket="izin-masuk" class="btn btn-warning btn-lg">
                             Izin
@@ -100,6 +100,11 @@
                           <button type="button" id="btnCuti" data-ket="cuti-masuk" class="btn btn-secondary btn-lg">
                             Cuti
                           </button>
+                          <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                            Demo Cuti
+                          </button>
+
                         </div>
                       <?php
                       }
@@ -112,14 +117,14 @@
                   <div class="card card-box">
                     <h5 class="card-header weight-500"><i class="fa fa-clock-o"></i> Absen Pulang</h5>
                     <div class="card-body">
-                      <?php 
-                      if(isset($data['absen']) && $data['absen']->jam_masuk && $data['absen']->keterangan != 'Hadir'){
+                      <?php
+                      if (isset($data['absen']) && $data['absen']->jam_masuk && $data['absen']->keterangan != 'Hadir') {
                         $statusPulang = '<b class="">' . $data['absen']->keterangan . '</b>';
-                      }elseif(isset($data['absen']) && $data['absen']->jam_pulang) {
+                      } elseif (isset($data['absen']) && $data['absen']->jam_pulang) {
                         $statusPulang = '<b class="">' . $data['absen']->keterangan . '</b>';
-                      }else{
+                      } else {
                         $statusPulang = '<b class="text-danger">Belum Absen</b>';
-                      } 
+                      }
                       ?>
                       <p class="card-text mb-0">Jam Datang : <b class="text-success">17:00 - 18:00</b> </p>
                       <p class="card-text">Status Kehadiran : <?= $statusPulang ?></p>
@@ -129,41 +134,73 @@
                           <p><i>Sudah absen pulang pada jam</i></p>
                           <h5><?= timeFilter($data['absen']->jam_pulang); ?></h5>
                         </div>
-                        <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && $data['absen']->keterangan == 'Tidak Hadir') { ?>
-                          <div style="text-align: center;">
+                      <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && $data['absen']->keterangan == 'Tidak Hadir') { ?>
+                        <div style="text-align: center;">
                           <p><i>Anda Tidak Hadir hari ini</i></p>
                         </div>
-                        <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && ($data['absen']->keterangan == 'Izin' || $data['absen']->keterangan == 'Cuti')) { ?>
-                          <div style="text-align: center;">
-                            <?php if($data['absen']->konfirmasi){ ?>
-                              <h6><i>Absensi Kehadiran telah <?= $data['absen']->konfirmasi ?></i></h6>
-                            <?php }else{ ?>
-                              <h6><i>Menunggu Konfirmasi dari Admin</i></h6>
-                              <?php
-                            } ?>
-                          </div>
-                        <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && !$data['absen']->jam_pulang && $data['absen']->keterangan == 'Hadir') {
-                        ?>
-                          <div class="row" style="text-align:center;padding:20px;justify-content:space-around;">
-                            <button type="button" id="btnAbsen" data-ket="hadir-pulang" class="btn btn-success btn-lg">
-                              Absen Pulang
-                            </button>
-                          </div>
-                        <?php
-                        } else {
-                        ?>
-                          <div style="text-align: center;">
-                            <p class="text-danger"><i>Anda belum absen kehadiran datang</i></p>
-                            <p class=""><i>"Harap absen kehadiran datang lebih dulu"</i></p>
-                          </div>
+                      <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && ($data['absen']->keterangan == 'Izin' || $data['absen']->keterangan == 'Cuti')) { ?>
+                        <div style="text-align: center;">
+                          <?php if ($data['absen']->konfirmasi) { ?>
+                            <h6><i>Absensi Kehadiran telah <?= $data['absen']->konfirmasi ?></i></h6>
+                          <?php } else { ?>
+                            <h6><i>Menunggu Konfirmasi dari Admin</i></h6>
+                          <?php
+                          } ?>
+                        </div>
+                      <?php } elseif (isset($data['absen']) && $data['absen']->jam_masuk && !$data['absen']->jam_pulang && $data['absen']->keterangan == 'Hadir') {
+                      ?>
+                        <div class="row" style="text-align:center;padding:20px;justify-content:space-around;">
+                          <button type="button" id="btnAbsen" data-ket="hadir-pulang" class="btn btn-success btn-lg">
+                            Absen Pulang
+                          </button>
+                        </div>
                       <?php
-                        }
+                      } else {
+                      ?>
+                        <div style="text-align: center;">
+                          <p class="text-danger"><i>Anda belum absen kehadiran datang</i></p>
+                          <p class=""><i>"Harap absen kehadiran datang lebih dulu"</i></p>
+                        </div>
+                      <?php
+                      }
                       ?>
 
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Pilih Tanggal Cuti</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputEmail4">Tanggal Mulai</label>
+                    <input type="date" class="form-control" id="inputEmail4" placeholder="Email">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword4">Tanggal Berakhir</label>
+                    <input type="date" class="form-control" id="inputPassword4" placeholder="Password">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
@@ -275,7 +312,7 @@
             });
           });
 
-          
+
           $(document).delegate("#btnCuti", "click", function() {
             Swal.fire({
               icon: 'warning',

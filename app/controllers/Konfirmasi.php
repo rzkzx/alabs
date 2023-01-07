@@ -9,8 +9,8 @@ class Konfirmasi extends Controller
     }
 
     if (!Middleware::admin()) {
-        return redirect('login');
-      }
+      return redirect('login');
+    }
 
     //new model instance
     $this->absenModel = $this->model('AbsenModel');
@@ -29,21 +29,21 @@ class Konfirmasi extends Controller
     $this->view('konfirmasi/index', $data);
   }
 
-  public function konfir($data = ''){
+  public function konfir($data = '')
+  {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if ($data == '') {
-          return redirect('absen');
-        } else {
-          $data = explode('-', $data);
-            if ($this->absenModel->konfirmasi($data)) {
-                setFlash('Berhasil konfirmasi kehadiran', 'success');
-            } else {
-                setFlash('Gagal konfirmasi kehadiran', 'danger');
-            }
-        }
+      if ($data == '') {
+        return redirect('absen');
       } else {
-        return redirect('konfirmasi');
+        $data = explode('-', $data);
+        if ($this->absenModel->konfirmasi($data)) {
+          setFlash('Berhasil konfirmasi kehadiran', 'success');
+        } else {
+          setFlash('Gagal konfirmasi kehadiran', 'danger');
+        }
       }
+    } else {
+      return redirect('konfirmasi');
+    }
   }
-
 }
