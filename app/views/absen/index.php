@@ -98,9 +98,19 @@
                             Absen
                           </button>
                           <!-- Button trigger modal -->
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            Cuti
-                          </button>
+                          <?php if ($data['totalCuti'] > 3) {
+                          ?>
+                            <button type="button" id="btnCuti" class="btn btn-primary btn-lg">
+                              Cuti
+                            </button>
+                          <?php
+                          } else {
+                          ?>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                              Cuti
+                            </button>
+                          <?php
+                          } ?>
 
                         </div>
                       <?php
@@ -122,6 +132,7 @@
                       } else {
                         $statusPulang = '<b class="text-danger">Belum Absen</b>';
                       }
+
                       ?>
                       <p class="card-text mb-0">Jam Datang : <b class="text-success">17:00 - 18:00</b> </p>
                       <p class="card-text">Status Kehadiran : <?= $statusPulang ?></p>
@@ -235,6 +246,15 @@
         getCurrentTimeDate();
 
         function alertConfirmation() {
+          $(document).delegate("#btnCuti", "click", function() {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Anda melebihi batas cuti bulanan!',
+              confirmButtonText: 'OK',
+            })
+          });
+
           $(document).delegate("#btnAbsen", "click", function() {
             Swal.fire({
               icon: 'warning',
