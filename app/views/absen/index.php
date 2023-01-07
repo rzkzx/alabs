@@ -97,12 +97,9 @@
                           <button type="button" id="btnTidak" data-ket="tidak-masuk" class="btn btn-danger btn-lg">
                             Absen
                           </button>
-                          <button type="button" id="btnCuti" data-ket="cuti-masuk" class="btn btn-secondary btn-lg">
-                            Cuti
-                          </button>
                           <!-- Button trigger modal -->
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            Demo Cuti
+                            Cuti
                           </button>
 
                         </div>
@@ -184,24 +181,24 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <form>
+            <form method="post" action="<?= URLROOT ?>/absen/cuti">
+              <div class="modal-body">
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label for="inputEmail4">Tanggal Mulai</label>
-                    <input type="date" class="form-control" id="inputEmail4" placeholder="Email">
+                    <label for="cuti_mulai">Tanggal Mulai</label>
+                    <input type="date" class="form-control" id="cuti_mulai" name="cuti_mulai" required>
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="inputPassword4">Tanggal Berakhir</label>
-                    <input type="date" class="form-control" id="inputPassword4" placeholder="Password">
+                    <label for="cuti_berakhir">Tanggal Berakhir</label>
+                    <input type="date" class="form-control" id="cuti_berakhir" name="cuti_berakhir" required>
                   </div>
                 </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-info">Absen Cuti</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -279,44 +276,6 @@
             Swal.fire({
               icon: 'warning',
               title: 'Anda Tidak Hadir hari ini?',
-              showDenyButton: false,
-              showCancelButton: true,
-              confirmButtonText: 'Absen',
-              cancelButtonText: 'Batal'
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-
-                var ket = $(this).attr('data-ket');
-
-                // Ajax config
-                $.ajax({
-                  type: "POST", //we are using GET method to get data from server side
-                  url: '<?= URLROOT ?>/absen/absensi/' + ket, // get the route value
-                  beforeSend: function() { //We add this before send to disable the button once we submit it so that we prevent the multiple click
-
-                  },
-                  success: function(response) { //once the request successfully process to the server side it will return result here
-                    // Reload lists of employees
-                    Swal.fire('Berhasil Absen Kehadiran hari ini.', response, 'success').then((result) => {
-                      if (result.isConfirmed) {
-                        location.reload();
-                      }
-                    });
-                  }
-                });
-
-              } else if (result.isDenied) {
-                Swal.fire('Perubahan tidak disimpan', '', 'info')
-              }
-            });
-          });
-
-
-          $(document).delegate("#btnCuti", "click", function() {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Anda Cuti hari ini?',
               showDenyButton: false,
               showCancelButton: true,
               confirmButtonText: 'Absen',

@@ -124,6 +124,28 @@ class AbsenModel
     return $this->db->rowCount();
   }
 
+  public function absenCuti($data)
+  {
+    $tanggal = today();
+    $jam_masuk = timeNow();
+    $keterangan = 'Cuti';
+
+    $query = "INSERT INTO " . $this->table . " (nip, tanggal, jam_masuk, keterangan, cuti_mulai, cuti_berakhir) 
+    VALUES (:nip, :tanggal, :jam_masuk, :keterangan, :cuti_mulai, :cuti_berakhir)";
+
+    $this->db->query($query);
+    $this->db->bind('nip', $_SESSION['nip']);
+    $this->db->bind('tanggal', $tanggal);
+    $this->db->bind('jam_masuk', $jam_masuk);
+    $this->db->bind('keterangan', $keterangan);
+    $this->db->bind('cuti_mulai', $data['cuti_mulai']);
+    $this->db->bind('cuti_berakhir', $data['cuti_berakhir']);
+    $this->db->execute();
+
+    return $this->db->rowCount();
+  }
+
+
   public function absenPulang()
   {
     $tanggal = today();
@@ -151,19 +173,25 @@ class AbsenModel
     $id = $data[1];
     if ($data[0] == 'diterima') {
       $ket = 'Diterima';
-    } else {
-      $ket = 'Ditolak';
-    }
+      $this->db->query('UPDATE ' . $this->table . ' SET konfirmasi=:konfirmasi WHERE id=:id');
+      $this->db->bind(':id', $id);
+      $this->db->bind(':konfirmasi', $ket);
 
-    $this->db->query('UPDATE ' . $this->table . ' SET konfirmasi=:konfirmasi WHERE id=:id');
-    $this->db->bind(':id', $id);
-    $this->db->bind(':konfirmasi', $ket);
-
-    //execute 
-    if ($this->db->execute()) {
-      return true;
+      //execute 
+      if ($this->db->execute()) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      $this->db->query('DELETE FROM ' . $this->table . ' WHERE id = :id');
+      $this->db->bind(':id', $id);
+
+      if ($this->db->execute()) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }

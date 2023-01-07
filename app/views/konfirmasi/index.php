@@ -36,6 +36,8 @@
                 <th>Nama</th>
                 <th>No. HP</th>
                 <th>Keterangan</th>
+                <th>Awal Cuti</th>
+                <th>Akhir Cuti</th>
                 <th class="datatable-nosort">Konfirmasi</th>
               </tr>
             </thead>
@@ -43,10 +45,18 @@
               <?php
               $no = 1;
               foreach ($data['absen'] as $absen) {
-                if($absen->keterangan == 'Izin'){
-                    $badge = 'warning';
-                }else{
-                    $badge = 'secondary';
+                if ($absen->keterangan == 'Izin') {
+                  $badge = 'warning';
+                } else {
+                  $badge = 'secondary';
+                }
+
+                if ($absen->cuti_mulai) {
+                  $awal_cuti = dateID($absen->cuti_mulai);
+                  $akhir_cuti = dateID($absen->cuti_berakhir);
+                } else {
+                  $awal_cuti = NULL;
+                  $akhir_cuti = NULL;
                 }
               ?>
                 <tr>
@@ -54,24 +64,28 @@
                   <td class="table-plus"><?= $absen->nip ?></td>
                   <td class="table-plus"><?= $absen->nama ?></td>
                   <td><?= $absen->no_hp ?></td>
-                  <td><h6><span class="badge badge-<?= $badge ?> badge-lg"><?= $absen->keterangan ?></span></h6></td>
                   <td>
-                    <?php if($absen->konfirmasi){
-                        if($absen->konfirmasi == 'Diterima'){
-                            $konfBadge = 'success';
-                        }else{
-                            $konfBadge = 'danger';
-                        }
-                        ?>
-                        <h6><span class="badge badge-<?= $konfBadge ?> badge-lg"><?= $absen->konfirmasi ?></span></h6>
-                        <?php
-                    }else{
-                        ?>
-                        <button type="button" id="btnKonfirmasi" data-ket="diterima-<?= $absen->id ?>" class="btn btn-success btn-sm">Diterima</button>
-                        <button type="button" id="btnKonfirmasi" data-ket="ditolak-<?= $absen->id ?>" class="btn btn-danger btn-sm">Ditolak</button>
-                        <?php
+                    <h6><span class="badge badge-<?= $badge ?> badge-lg"><?= $absen->keterangan ?></span></h6>
+                  </td>
+                  <td><?= $awal_cuti ?></td>
+                  <td><?= $akhir_cuti ?></td>
+                  <td>
+                    <?php if ($absen->konfirmasi) {
+                      if ($absen->konfirmasi == 'Diterima') {
+                        $konfBadge = 'success';
+                      } else {
+                        $konfBadge = 'danger';
+                      }
+                    ?>
+                      <h6><span class="badge badge-<?= $konfBadge ?> badge-lg"><?= $absen->konfirmasi ?></span></h6>
+                    <?php
+                    } else {
+                    ?>
+                      <button type="button" id="btnKonfirmasi" data-ket="diterima-<?= $absen->id ?>" class="btn btn-success btn-sm">Diterima</button>
+                      <button type="button" id="btnKonfirmasi" data-ket="ditolak-<?= $absen->id ?>" class="btn btn-danger btn-sm">Ditolak</button>
+                    <?php
                     } ?>
-                  
+
                   </td>
                 </tr>
               <?php
@@ -87,7 +101,7 @@
       <?php require APPROOT . '/views/layouts/footer.php'; ?>
 
       <script>
-      function alertConfirmation() {
+        function alertConfirmation() {
           $(document).delegate("#btnKonfirmasi", "click", function() {
             Swal.fire({
               icon: 'warning',
@@ -125,4 +139,4 @@
             });
           });
         }
-        </script>
+      </script>

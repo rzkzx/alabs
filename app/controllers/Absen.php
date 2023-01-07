@@ -53,4 +53,17 @@ class Absen extends Controller
       return redirect('absen');
     }
   }
+
+  public function cuti()
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      if ($this->absenModel->absenCuti($_POST)) {
+        return redirect('absen');
+      } else {
+        return redirect('absen');
+      }
+    } else {
+      return redirect('absen');
+    }
+  }
 }
