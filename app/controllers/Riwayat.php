@@ -60,4 +60,24 @@ class Riwayat extends Controller
       return redirect('riwayat');
     }
   }
+
+  public function export($nip = '')
+  {
+    $data = [
+      'title' => 'Riwayat Absensi',
+      'menu' => 'Riwayat Absensi',
+    ];
+
+    if ($nip) {
+      $data['riwayat'] = $this->absenModel->getRiwayatUserNIP($nip);
+
+      $data['user'] = $this->userModel->getUserByNIP($nip);
+
+      $this->view('riwayat/export/index', $data);
+    } else {
+      $data['users'] = $this->userModel->getAll();
+
+      $this->view('riwayat/export/index', $data);
+    }
+  }
 }

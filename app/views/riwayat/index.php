@@ -59,7 +59,8 @@
       <div class="card-box mb-30">
         <div class="pb-20 pt-20">
           <?php flash(); ?>
-          <div class="d-flex flex-row align-items-center" style="justify-content: flex-end;">
+          <div class="d-flex flex-row align-items-center m-3" style="justify-content: space-between;">
+            <a href="<?= URLROOT ?>/riwayat/export/<?= $data['user']->nip ?>" target="_blank" class="btn btn-info">PRINT</a>
             <form class="form-inline" method="POST" action="">
               <input type="month" class="form-control mr-2" placeholder="" name="date" value="<?php echo isset($_POST['date']) ? $_POST['date'] : '' ?>" />
               <button class="btn btn-primary mr-2" name="filter"><span class="fa fa-filter"></span></button>

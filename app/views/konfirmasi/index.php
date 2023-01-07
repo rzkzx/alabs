@@ -21,6 +21,12 @@
           </div>
         </div>
       </div>
+
+      <div class="card card-box mb-30">
+        <div class="card-header">Konfirmasi Absen User</div>
+        <div class="card-body row" style="align-items: center;">
+        </div>
+      </div>
       <!-- Simple Datatable start -->
       <div class="card-box mb-30">
         <div class="pd-20">
