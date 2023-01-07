@@ -72,6 +72,7 @@
                 <th>Tanggal</th>
                 <th class="table-plus datatable-nosort">Jam Masuk</th>
                 <th class="table-plus datatable-nosort">Jam Pulang</th>
+                <th class="table-plus datatable-nosort">Total Jam Kerja</th>
                 <th>Keterangan</th>
               </tr>
             </thead>
@@ -92,12 +93,25 @@
                 } else {
                   $jam_pulang = timeFilter($absen->jam_pulang);
                 }
+
+                $total_jam = strtotime($absen->jam_pulang) - strtotime($absen->jam_masuk);
+                $total_jam = $total_jam / 60;
+                if ($total_jam < 480) {
+                  $jamkerja = 480 - $total_jam;
+                  $total_jam = '<span class="text-danger">Kurang ' . $jamkerja . ' Menit Kerja</span>';
+                } else {
+                  $total_jam = $total_jam . ' Menit Kerja';
+                }
+                if ($absen->keterangan != 'Hadir') {
+                  $total_jam = '<span class="text-danger">Tidak Hadir</span>';
+                }
               ?>
                 <tr>
                   <td><?= $no ?></td>
                   <td><?= dayID($absen->tanggal) ?>, <?= dateID($absen->tanggal) ?></td>
                   <td class="table-plus"><?= timeFilter($absen->jam_masuk) ?></td>
                   <td class="table-plus"><?= $jam_pulang ?></td>
+                  <td><?= $total_jam ?></td>
                   <td><span class="badge badge-<?= $badge ?>"><?= $absen->keterangan ?></span></td>
                 </tr>
               <?php
