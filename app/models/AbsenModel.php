@@ -73,6 +73,18 @@ class AbsenModel
     return $result;
   }
 
+  public function getRiwayatUserNIPByCurrentDate($nip)
+  {
+    $bulan = date("m");
+
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip AND MONTH(tanggal) = :bulan ORDER BY id ASC');
+    $this->db->bind('nip', $nip);
+    $this->db->bind('bulan', $bulan);
+    $result = $this->db->resultSet();
+
+    return $result;
+  }
+
   public function getRiwayatUserLogged()
   {
     $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');

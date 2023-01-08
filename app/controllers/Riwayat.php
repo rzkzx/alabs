@@ -69,7 +69,7 @@ class Riwayat extends Controller
     ];
 
     if ($nip) {
-      $data['riwayat'] = $this->absenModel->getRiwayatUserNIP($nip);
+      $data['riwayat'] = $this->absenModel->getRiwayatUserNIPByCurrentDate($nip);
 
       $data['user'] = $this->userModel->getUserByNIP($nip);
 

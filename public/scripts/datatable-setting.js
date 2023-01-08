@@ -1,5 +1,5 @@
 $('document').ready(function(){
-	$('.data-table').DataTable({
+	$('.data-tableee').DataTable({
 		scrollCollapse: true,
 		autoWidth: false,
 		responsive: true,

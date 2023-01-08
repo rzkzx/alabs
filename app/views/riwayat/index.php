@@ -66,7 +66,7 @@
               <button class="btn btn-primary mr-2" name="filter"><span class="fa fa-filter"></span></button>
             </form>
           </div>
-          <table class="table hover stripe data-table-export nowrap">
+          <table class="table hover stripe data-tableee nowrap">
             <thead>
               <tr>
                 <th>No</th>
