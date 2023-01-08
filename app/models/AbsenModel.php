@@ -43,7 +43,7 @@ class AbsenModel
 
   public function getRiwayat()
   {
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id ASC');
     $this->db->bind('nip', $_SESSION['nip']);
     $result = $this->db->resultSet();
 
@@ -52,7 +52,7 @@ class AbsenModel
 
   public function getRiwayatUserNIP($nip)
   {
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id ASC');
     $this->db->bind('nip', $nip);
     $result = $this->db->resultSet();
 
@@ -64,7 +64,7 @@ class AbsenModel
     $bulan = date("m", strtotime($date));
     $tahun = date("Y", strtotime($date));
 
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip AND MONTH(tanggal) = :bulan AND YEAR(tanggal) = :tahun ORDER BY id DESC');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip AND MONTH(tanggal) = :bulan AND YEAR(tanggal) = :tahun ORDER BY id ASC');
     $this->db->bind('nip', $nip);
     $this->db->bind('bulan', $bulan);
     $this->db->bind('tahun', $tahun);
@@ -87,7 +87,7 @@ class AbsenModel
 
   public function getRiwayatUserLogged()
   {
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id DESC');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip ORDER BY id ASC');
     $this->db->bind('nip', $_SESSION['nip']);
     $result = $this->db->resultSet();
 
@@ -99,7 +99,7 @@ class AbsenModel
     $bulan = date("m", strtotime($date));
     $tahun = date("Y", strtotime($date));
 
-    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip AND MONTH(tanggal) = :bulan AND YEAR(tanggal) = :tahun ORDER BY id DESC');
+    $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip=:nip AND MONTH(tanggal) = :bulan AND YEAR(tanggal) = :tahun ORDER BY id ASC');
     $this->db->bind('nip', $_SESSION['nip']);
     $this->db->bind('bulan', $bulan);
     $this->db->bind('tahun', $tahun);
